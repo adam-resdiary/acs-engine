@@ -329,6 +329,7 @@ type MasterProfile struct {
 	Count                    int               `json:"count" validate:"required,eq=1|eq=3|eq=5"`
 	DNSPrefix                string            `json:"dnsPrefix" validate:"required"`
 	SubjectAltNames          []string          `json:"subjectAltNames"`
+	OSDiskVhdURI             string            `json:"osDiskVhdUri,omitempty"`
 	VMSize                   string            `json:"vmSize" validate:"required"`
 	OSDiskSizeGB             int               `json:"osDiskSizeGB,omitempty" validate:"min=0,max=1023"`
 	VnetSubnetID             string            `json:"vnetSubnetID,omitempty"`
@@ -386,6 +387,7 @@ type AgentPoolProfile struct {
 	Name                string               `json:"name" validate:"required"`
 	Count               int                  `json:"count" validate:"required,min=1,max=100"`
 	VMSize              string               `json:"vmSize" validate:"required"`
+	OSDiskVhdURI        string               `json:"osDiskVhdUri,omitempty"`
 	OSDiskSizeGB        int                  `json:"osDiskSizeGB,omitempty" validate:"min=0,max=1023"`
 	DNSPrefix           string               `json:"dnsPrefix,omitempty"`
 	OSType              OSType               `json:"osType,omitempty"`

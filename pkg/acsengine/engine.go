@@ -809,6 +809,9 @@ func getParameters(cs *api.ContainerService, isClassicMode bool, generatorCode s
 				addValue(parametersMap, fmt.Sprintf("%sosImageName", agentProfile.Name), agentProfile.ImageRef.Name)
 				addValue(parametersMap, fmt.Sprintf("%sosImageResourceGroup", agentProfile.Name), agentProfile.ImageRef.ResourceGroup)
 			}
+			if len(agentProfile.OSDiskVhdURI) > 0 && agentProfile.ImageRef == nil {
+				addValue(parametersMap, "osDiskVhdUri", agentProfile.OSDiskVhdURI)
+			}
 			addValue(parametersMap, fmt.Sprintf("%sosImageOffer", agentProfile.Name), cloudSpecConfig.OSImageConfig[agentProfile.Distro].ImageOffer)
 			addValue(parametersMap, fmt.Sprintf("%sosImageSKU", agentProfile.Name), cloudSpecConfig.OSImageConfig[agentProfile.Distro].ImageSku)
 			addValue(parametersMap, fmt.Sprintf("%sosImagePublisher", agentProfile.Name), cloudSpecConfig.OSImageConfig[agentProfile.Distro].ImagePublisher)
@@ -1416,6 +1419,14 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 		"UseMasterCustomImage": func() bool {
 			imageRef := cs.Properties.MasterProfile.ImageRef
 			return imageRef != nil && len(imageRef.Name) > 0 && len(imageRef.ResourceGroup) > 0
+		},
+		"UseAgentCustomVhd": func(profile *api.AgentPoolProfile) bool {
+			OSDiskVhdURI := profile.OSDiskVhdURI
+			return len(OSDiskVhdURI) > 0
+		},
+		"UseMasterCustomVhd": func() bool {
+			OSDiskVhdURI := cs.Properties.MasterProfile.OSDiskVhdURI
+			return len(OSDiskVhdURI) > 0
 		},
 		"GetMasterEtcdServerPort": func() int {
 			return DefaultMasterEtcdServerPort
